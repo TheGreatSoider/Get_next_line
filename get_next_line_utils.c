@@ -73,6 +73,7 @@ void	*ft_calloc(size_t count, size_t size)
 {
 	void	*rtn;
 	size_t	i;
+	size_t	j;
 
 	i = size * count;
 	if (i == 0)
@@ -82,7 +83,12 @@ void	*ft_calloc(size_t count, size_t size)
 	rtn = malloc(i);
 	if (rtn == 0)
 		return (NULL);
-	ft_bzero(rtn, i);
+	j = 0;
+	while (j < i)
+	{
+		((unsigned char *)rtn)[j] = 0;
+		j++;
+	}
 	return (rtn);
 }
 
@@ -112,16 +118,4 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 	}
 	str[j] = '\0';
 	return (str);
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < n)
-	{
-		((unsigned char *)s)[i] = 0;
-		i++;
-	}
 }
