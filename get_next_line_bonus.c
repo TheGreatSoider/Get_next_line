@@ -97,12 +97,13 @@ char	*get_next_line(int fd)
 	char		**temp;
 	char		*line;
 
+	temp = 0;
 	if (fd < 0 || fd > 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
 	str[fd] = reading(fd, str[fd]);
 	if (str == 0)
 		return (NULL);
 	line = cpy_del(str[fd], temp);
-	str[fd] = temp;
+	str[fd] = *temp;
 	return (line);
 }

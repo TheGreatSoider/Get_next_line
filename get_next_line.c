@@ -72,7 +72,7 @@ char	*cpy_del(char *str, char **temp)
 	while (str[i++] != '\0')
 		j++;
 	temp = ft_calloc((j - 1), sizeof(char));
-	temp = ft_substr(str, (i - j + 1), (j - 1));
+	*temp = ft_substr(str, (i - j + 1), (j - 1));
 	i = 0;
 	while (str[i] != '\0' && str[i] != '\n')
 	{
@@ -100,13 +100,14 @@ char	*get_next_line(int fd)
 	char		**temp;
 	char		*line;
 
+	temp = 0;
 	if (fd < 0 || fd > 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
 	str = reading(fd, str);
 	if (str == 0)
 		return (NULL);
 	line = cpy_del(str, temp);
-	str = temp;
+	str = *temp;
 	free(temp);
 	return (line);
 }
