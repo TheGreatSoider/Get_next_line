@@ -37,7 +37,7 @@ char	*reading(int fd, char *str)
 	if (buff == 0)
 		return (NULL);
 	i = 1;
-	while (ft_strchr(str, '\n') && i != 0)
+	while (ft_strchr(str, '\n') == 0 && i != 0)
 	{
 		i = read(fd, buff, BUFFER_SIZE);
 		if (i == -1)
@@ -104,7 +104,7 @@ char	*get_next_line(int fd)
 	if (fd < 0 || fd > 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
 	str = reading(fd, str);
-	if (str == 0)
+	if (str == NULL)
 		return (NULL);
 	line = cpy_del(str, temp);
 	if (line == 0)
@@ -114,8 +114,8 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-int main (void)
-{
-	int	fd1 = open("test.txt", O_RDONLY);
-	printf("%s\n", get_next_line(fd1));
-}
+// int main (void)
+// {
+// 	int	fd1 = open("test.txt", O_RDONLY);
+// 	printf("%s\n", get_next_line(fd1));
+// }

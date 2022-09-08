@@ -34,7 +34,7 @@ char	*reading(int fd, char *str)
 	if (buff == 0)
 		return (NULL);
 	i = 1;
-	while (ft_strchr(str, '\n') && i != 0)
+	while (ft_strchr(str, '\n') == 0 && i != 0)
 	{
 		i = read(fd, buff, BUFFER_SIZE);
 		if (i == -1)
