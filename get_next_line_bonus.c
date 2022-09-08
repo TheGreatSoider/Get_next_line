@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
+#include <stdio.h>
 
 /*
 Reads whatever in fd and stores in buff temporarily
@@ -107,3 +108,9 @@ char	*get_next_line(int fd)
 	str[fd] = *temp;
 	return (line);
 }
+
+// int main (void)
+// {
+// 	int	fd1 = open("test.txt", O_RDONLY);
+// 	printf("%s\n", get_next_line(fd1));
+// }

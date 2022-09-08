@@ -14,6 +14,7 @@
 // line for this project"
 
 #include "get_next_line.h"
+#include <stdio.h>
 
 /*
 Reads whatever in fd and stores in buff temporarily
@@ -71,7 +72,6 @@ char	*cpy_del(char *str, char **temp)
 	j = 0;
 	while (str[i++] != '\0')
 		j++;
-	temp = ft_calloc((j - 1), sizeof(char));
 	*temp = ft_substr(str, (i - j + 1), (j - 1));
 	i = 0;
 	while (str[i] != '\0' && str[i] != '\n')
@@ -107,7 +107,15 @@ char	*get_next_line(int fd)
 	if (str == 0)
 		return (NULL);
 	line = cpy_del(str, temp);
+	if (line == 0)
+		return (NULL);
 	str = *temp;
 	free(temp);
 	return (line);
+}
+
+int main (void)
+{
+	int	fd1 = open("test.txt", O_RDONLY);
+	printf("%s\n", get_next_line(fd1));
 }
