@@ -59,29 +59,20 @@ temp = Bye-
 line = Hello-World\n
 */
 
-char	*cpy_del(char *str, char **temp)
+char	*cpy_del(char *str)
 {
 	char	*line;
+	char	*temp;
 	int		i;
-	int		j;
 
 	i = 0;
 	while (str[i] != '\0' && str[i] != '\n')
 		i++;
-	line = ft_calloc((i + 2), sizeof(char));
-	j = 0;
-	while (str[i++] != '\0')
-		j++;
-	*temp = ft_substr(str, (i - j + 1), (j - 1));
-	i = 0;
-	while (str[i] != '\0' && str[i] != '\n')
-	{
-		line[i] = str[i];
-		i++;
-	}
-	if (str[i++] == '\n')
-		line[i] = str[i];
+	line = ft_substr(str, 0, (i + 1));
+	temp = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
 	free(str);
+	str = temp;
+	printf("%s\n", str);
 	return (line);
 }
 
@@ -96,26 +87,34 @@ Free temp to prevent leaks
 
 char	*get_next_line(int fd)
 {
-	static char	*str;
+	static char	*str[1024];
 	char		**temp;
 	char		*line;
 
-	temp = 0;
+	temp = ft_calloc(1, 1);
 	if (fd < 0 || fd > 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
-	str = reading(fd, str);
+	str[fd] = reading(fd, str[fd]);
 	if (str == NULL)
 		return (NULL);
-	line = cpy_del(str, temp);
-	if (line == 0)
-		return (NULL);
-	str = *temp;
+	line = cpy_del(str[fd]);
 	free(temp);
 	return (line);
 }
 
-// int main (void)
-// {
-// 	int	fd1 = open("test.txt", O_RDONLY);
-// 	printf("%s\n", get_next_line(fd1));
-// }
+
+int main (void)
+{
+	int	fd1 = open("test.txt", O_RDONLY);
+	char	*str;
+	char	*str2;
+	char	*res;
+
+	str = reading(fd1, str);
+	printf("%s\n", str);
+	str2 = cpy_del(str);
+	printf("%s\n", str2);
+	printf("%s\n", &*str);
+// 	res = get_next_line(fd1);
+// 	printf("%s\n", res);
+}
