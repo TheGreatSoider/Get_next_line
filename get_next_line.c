@@ -87,18 +87,15 @@ Free temp to prevent leaks
 
 char	*get_next_line(int fd)
 {
-	static char	*str[1024];
-	char		**temp;
+	static char	*str;
 	char		*line;
 
-	temp = ft_calloc(1, 1);
 	if (fd < 0 || fd > 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
-	str[fd] = reading(fd, str[fd]);
+	str = reading(fd, str);
 	if (str == NULL)
 		return (NULL);
-	line = cpy_del(str[fd]);
-	free(temp);
+	line = cpy_del(str);
 	return (line);
 }
 
@@ -115,6 +112,6 @@ int main (void)
 	str2 = cpy_del(str);
 	printf("%s\n", str2);
 	printf("%s\n", &*str);
-// 	res = get_next_line(fd1);
-// 	printf("%s\n", res);
+	// res = get_next_line(fd1);
+	// printf("%s\n", res);
 }
