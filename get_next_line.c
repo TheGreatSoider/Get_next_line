@@ -37,7 +37,7 @@ char	*reading(int fd, char *str)
 	if (buff == 0)
 		return (NULL);
 	i = 1;
-	while (!ft_strchr(str, '\n') && i != 0)
+	while (ft_strchr(str, '\n') == 0 && i != 0)
 	{
 		i = read(fd, buff, BUFFER_SIZE);
 		if (i == -1)
@@ -45,6 +45,7 @@ char	*reading(int fd, char *str)
 			free(buff);
 			return (NULL);
 		}
+		buff[i] = '\0';
 		str = ft_strjoin(str, buff);
 	}
 	free(buff);
@@ -59,21 +60,28 @@ temp = Bye-
 line = Hello-World\n
 */
 
-char	*cpy_del(char *str)
+char	*cpy_del(char **str)
 {
-	char	*line;
 	char	*temp;
+	char	*line;
 	int		i;
 
 	i = 0;
-	while (str[i] != '\0' && str[i] != '\n')
+	if (str == NULL)
+		return (NULL);
+	while ((*str)[i] != '\0' && (*str)[i] != '\n')
 		i++;
-	line = ft_substr(str, 0, (i + 1));
-	temp = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
-	free(str);
-	str = ft_strdup(temp);
-	free(temp);
-	printf("%s\n", str);
+	if ((*str)[i] == '\0')
+	{
+		line = ft_substr(*str, 0, (i + 1));
+		free(*str);
+		*str = NULL;
+		return (0);
+	}
+	line = ft_substr(*str, 0, (i + 1));
+	temp = ft_substr(*str, i + 1, ft_strlen(*str));
+	free(*str);
+	*str = ft_substr(temp, 0, (i + 1));
 	return (line);
 }
 
@@ -93,10 +101,12 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || fd > 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
+	if (str == 0)
+		str = ft_calloc(BUFFER_SIZE + 1, 1);
 	str = reading(fd, str);
-	if (str == NULL)
+	if (str == 0)
 		return (NULL);
-	line = cpy_del(str);
+	line = cpy_del(&str);
 	return (line);
 }
 
@@ -108,12 +118,16 @@ int main (void)
 	char	*str2;
 	char	*res;
 
-	fd1 = open("test.txt", O_RDONLY);
-	str = reading(fd1, str);
-	printf("%s\n", str);
-	str2 = cpy_del(str);
-	printf("%s\n", str2);
-	printf("%s\n", &*str);
-	res = get_next_line(fd1);
-	printf("%s\n", res);
+	fd1 = open("test1.txt", O_RDONLY);
+	// str = reading(fd1, str);
+	// printf("%s\n", str);
+	// str2 = cpy_del(str);
+	// printf("%s\n", str2);
+	// printf("%s\n", &*str);
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd1));
+	// printf("%s\n", get_next_line(fd1));
+	// printf("%s\n", get_next_line(fd1));
+	// printf("%s\n", get_next_line(fd1));
 }
