@@ -37,7 +37,7 @@ char	*reading(int fd, char *str)
 	if (buff == 0)
 		return (NULL);
 	i = 1;
-	while (ft_strchr(str, '\n') == 0 && i != 0)
+	while (!ft_strchr(str, '\n') && i != 0)
 	{
 		i = read(fd, buff, BUFFER_SIZE);
 		if (i == -1)
@@ -71,7 +71,8 @@ char	*cpy_del(char *str)
 	line = ft_substr(str, 0, (i + 1));
 	temp = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
 	free(str);
-	str = temp;
+	str = ft_strdup(temp);
+	free(temp);
 	printf("%s\n", str);
 	return (line);
 }
@@ -102,16 +103,17 @@ char	*get_next_line(int fd)
 
 int main (void)
 {
-	int	fd1 = open("test.txt", O_RDONLY);
+	int		fd1;
 	char	*str;
 	char	*str2;
 	char	*res;
 
+	fd1 = open("test.txt", O_RDONLY);
 	str = reading(fd1, str);
 	printf("%s\n", str);
 	str2 = cpy_del(str);
 	printf("%s\n", str2);
 	printf("%s\n", &*str);
-	// res = get_next_line(fd1);
-	// printf("%s\n", res);
+	res = get_next_line(fd1);
+	printf("%s\n", res);
 }
