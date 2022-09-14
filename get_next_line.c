@@ -33,7 +33,7 @@ char	*reading(int fd, char *str)
 	char	*buff;
 	int		i;
 
-	buff = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
+	buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (buff == 0)
 		return (NULL);
 	i = 1;
@@ -71,17 +71,14 @@ char	*cpy_del(char **str)
 		return (NULL);
 	while ((*str)[i] != '\0' && (*str)[i] != '\n')
 		i++;
-	if ((*str)[i] == '\0')
-	{
-		line = ft_substr(*str, 0, (i + 1));
-		free(*str);
-		*str = NULL;
-		return (0);
-	}
 	line = ft_substr(*str, 0, (i + 1));
 	temp = ft_substr(*str, i + 1, ft_strlen(*str));
 	free(*str);
-	*str = ft_substr(temp, 0, (i + 1));
+	if ((line)[i] == '\0')
+		*str = NULL;
+	else
+		*str = ft_substr(temp, 0, ft_strlen(temp));
+	free(temp);
 	return (line);
 }
 
@@ -111,23 +108,24 @@ char	*get_next_line(int fd)
 }
 
 
-int main (void)
-{
-	int		fd1;
-	char	*str;
-	char	*str2;
-	char	*res;
+// int main (void)
+// {
+// 	int		fd1;
+// 	char	*str;
+// 	char	*str2;
+// 	char	*res;
 
-	fd1 = open("test1.txt", O_RDONLY);
-	// str = reading(fd1, str);
-	// printf("%s\n", str);
-	// str2 = cpy_del(str);
-	// printf("%s\n", str2);
-	// printf("%s\n", &*str);
-	printf("%s\n", get_next_line(fd1));
-	printf("%s\n", get_next_line(fd1));
-	printf("%s\n", get_next_line(fd1));
-	// printf("%s\n", get_next_line(fd1));
-	// printf("%s\n", get_next_line(fd1));
-	// printf("%s\n", get_next_line(fd1));
-}
+// 	fd1 = open("test1.txt", O_RDONLY);
+// 	// str = reading(fd1, str);
+// 	// printf("%s\n", str);
+// 	// str2 = cpy_del(&str);
+// 	// printf("%s\n", str2);
+// 	// printf("%s\n", &*str);
+// 	printf("%s\n", get_next_line(fd1));
+// 	printf("%s\n", get_next_line(fd1));
+// 	printf("%s\n", get_next_line(fd1));
+// 	printf("%s\n", get_next_line(fd1));
+// 	printf("%s\n", get_next_line(fd1));
+// 	printf("%s\n", get_next_line(fd1));
+	
+// }
