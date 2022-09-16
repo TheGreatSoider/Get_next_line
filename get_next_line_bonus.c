@@ -42,6 +42,7 @@ char	*reading(int fd, char *str)
 			free(buff);
 			return (NULL);
 		}
+		buff[i] = '\0';
 		str = ft_strjoin(str, buff);
 	}
 	free(buff);
@@ -70,10 +71,7 @@ char	*cpy_del(char **str)
 	line = ft_substr(*str, 0, (i + 1));
 	temp = ft_substr(*str, i + 1, ft_strlen(*str));
 	free(*str);
-	if ((line)[i] == '\0')
-		*str = NULL;
-	else
-		*str = ft_substr(temp, 0, ft_strlen(temp));
+	*str = ft_substr(temp, 0, ft_strlen(temp));
 	free(temp);
 	return (line);
 }
@@ -103,37 +101,37 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-// int main (void)
-// {
-// 	int		fd1;
-// 	int		fd2;
-// 	int		fd3;
+int main (void)
+{
+	int		fd1;
+	int		fd2;
+	int		fd3;
 
-// 	fd1 = open("test1.txt", O_RDONLY);
-// 	fd2 = open("test2.txt", O_RDONLY);
-// 	fd3 = open("test3.txt", O_RDONLY);
-// 	printf("%s\n", get_next_line(fd1));
-// 	printf("%s\n", get_next_line(fd2));
-// 	printf("%s\n", get_next_line(fd3));
-// 	printf("%s\n", get_next_line(fd1));
-// 	printf("%s\n", get_next_line(fd2));
-// 	printf("%s\n", get_next_line(fd3));
-// 	printf("%s\n", get_next_line(fd1));
-// 	printf("%s\n", get_next_line(fd2));
-// 	printf("%s\n", get_next_line(fd3));
-// 	printf("%s\n", get_next_line(fd1));
-// 	printf("%s\n", get_next_line(fd2));
-// 	printf("%s\n", get_next_line(fd3));
-// 	printf("%s\n", get_next_line(fd1));
-// 	printf("%s\n", get_next_line(fd2));
-// 	printf("%s\n", get_next_line(fd3));
-// 	printf("%s\n", get_next_line(fd1));
-// 	printf("%s\n", get_next_line(fd2));
-// 	printf("%s\n", get_next_line(fd3));
-// 	printf("%s\n", get_next_line(fd1));
-// 	printf("%s\n", get_next_line(fd2));
-// 	printf("%s\n", get_next_line(fd3));
-// 	printf("%s\n", get_next_line(fd1));
-// 	printf("%s\n", get_next_line(fd2));
-// 	printf("%s\n", get_next_line(fd3));
-// }
+	fd1 = open("test1.txt", O_RDONLY);
+	fd2 = open("test2.txt", O_RDONLY);
+	fd3 = open("test3.txt", O_RDONLY);
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd2));
+	printf("%s\n", get_next_line(fd3));
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd2));
+	printf("%s\n", get_next_line(fd3));
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd2));
+	printf("%s\n", get_next_line(fd3));
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd2));
+	printf("%s\n", get_next_line(fd3));
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd2));
+	printf("%s\n", get_next_line(fd3));
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd2));
+	printf("%s\n", get_next_line(fd3));
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd2));
+	printf("%s\n", get_next_line(fd3));
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd2));
+	printf("%s\n", get_next_line(fd3));
+}
