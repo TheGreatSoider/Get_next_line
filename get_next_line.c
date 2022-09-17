@@ -28,28 +28,28 @@ Str = Hello-Wo\0
 Str = Hello-Wo + rld\nBye- = Hello-World\nBye-\0
 */
 
-char	*reading(int fd, char *str)
+static int	reading(int fd, char **str)
 {
 	char	*buff;
+	char	*temp;
 	int		i;
 
 	buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (buff == 0)
-		return (NULL);
+		return (-1);
 	i = 1;
-	while (ft_strchr(str, '\n') == 0 && i != 0)
+	while (i > 0 && ft_strchr(*str, '\n') == 0)
 	{
 		i = read(fd, buff, BUFFER_SIZE);
-		if (i == -1)
-		{
-			free(buff);
-			return (NULL);
-		}
+		if (i < 0)
+			break ;
 		buff[i] = '\0';
-		str = ft_strjoin(str, buff);
+		temp = ft_strjoin(*str, buff);
+		free(*str);
+		*str = temp;
 	}
 	free(buff);
-	return (str);
+	return (i);
 }
 
 /*
@@ -60,7 +60,7 @@ temp = Bye-
 line = Hello-World\n
 */
 
-char	*cpy_del(char **str)
+static char	*cpy_del(char **str)
 {
 	char	*temp;
 	char	*line;
@@ -71,11 +71,17 @@ char	*cpy_del(char **str)
 		return (NULL);
 	while ((*str)[i] != '\0' && (*str)[i] != '\n')
 		i++;
+	if ((*str)[i] == '\n')
+	{
+		line = ft_substr(*str, 0, (i + 1));
+		temp = ft_substr(*str, i + 1, ft_strlen(*str));
+		free(*str);
+		*str = temp;
+		return (line);
+	}
 	line = ft_substr(*str, 0, (i + 1));
-	temp = ft_substr(*str, i + 1, ft_strlen(*str));
 	free(*str);
-	*str = ft_substr(temp, 0, ft_strlen(temp));
-	free(temp);
+	*str = NULL;
 	return (line);
 }
 
@@ -91,37 +97,44 @@ Free temp to prevent leaks
 char	*get_next_line(int fd)
 {
 	static char	*str;
-	char		*line;
 
 	if (fd < 0 || fd > 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (str == 0)
-		str = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	str = reading(fd, str);
-	if (str == 0)
+		str = ft_calloc(1, 1);
+	if (reading(fd, &str) == -1
+		|| (*str == 0 && reading(fd, &str) == 0))
+	{
+		if (str != NULL)
+		{
+			free(str);
+			str = NULL;
+		}
 		return (NULL);
-	line = cpy_del(&str);
-	return (line);
+	}
+	return (cpy_del(&str));
 }
 
+// int main (void)
+// {
+// 	int		fd1;
+// 	char	*str;
+// 	char	*str2;
+// 	char	*res;
 
-int main (void)
-{
-	int		fd1;
-	char	*str;
-	char	*str2;
-	char	*res;
-
-	fd1 = open("test1.txt", O_RDONLY);
-	// str = reading(fd1, str);
-	// printf("%s\n", str);
-	// str2 = cpy_del(&str);
-	// printf("%s\n", str2);
-	// printf("%s\n", &*str);
-	printf("%s\n", get_next_line(fd1));
-	printf("%s\n", get_next_line(fd1));
-	printf("%s\n", get_next_line(fd1));
-	printf("%s\n", get_next_line(fd1));
-	printf("%s\n", get_next_line(fd1));
-	printf("%s\n", get_next_line(fd1));
-}
+// 	fd1 = open("test1.txt", O_RDONLY);
+// 	// str = reading(fd1, str);
+// 	// printf("%s\n", str);
+// 	// str2 = cpy_del(&str);
+// 	// printf("%s\n", str2);
+// 	// printf("%s\n", &*str);
+// 	printf("%s\n", get_next_line(fd1));
+// 	printf("%s\n", get_next_line(fd1));
+// 	printf("%s\n", get_next_line(fd1));
+// 	printf("%s\n", get_next_line(fd1));
+// 	printf("%s\n", get_next_line(fd1));
+// 	printf("%s\n", get_next_line(fd1));
+// 	printf("%s\n", get_next_line(fd1));
+// 	printf("%s\n", get_next_line(fd1));
+// 	printf("%s\n", get_next_line(fd1));
+// }
