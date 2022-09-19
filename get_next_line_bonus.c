@@ -99,7 +99,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (str[fd] == 0)
 		str[fd] = ft_calloc(1, 1);
-	if (reading(fd, &str[fd]) == -1 
+	if (reading(fd, &str[fd]) == -1
 		|| (*str[fd] == 0 && reading(fd, &str[fd]) == 0))
 	{
 		if (str[fd] != NULL)
