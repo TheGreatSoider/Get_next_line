@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
+// #include <stdio.h>
 
 /*
 Reads whatever in fd and stores in buff temporarily
@@ -68,17 +68,10 @@ static char	*cpy_del(char **str)
 		return (NULL);
 	while ((*str)[i] != '\0' && (*str)[i] != '\n')
 		i++;
-	if ((*str)[i] == '\n')
-	{
-		line = ft_substr(*str, 0, (i + 1));
-		temp = ft_substr(*str, i + 1, ft_strlen(*str));
-		free(*str);
-		*str = temp;
-		return (line);
-	}
 	line = ft_substr(*str, 0, (i + 1));
+	temp = ft_substr(*str, i + 1, ft_strlen(*str));
 	free(*str);
-	*str = NULL;
+	*str = temp;
 	return (line);
 }
 
@@ -94,13 +87,14 @@ Free temp to prevent leaks
 char	*get_next_line(int fd)
 {
 	static char	*str[1024];
+	int			rdng;
 
 	if (fd < 0 || fd > 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (str[fd] == 0)
 		str[fd] = ft_calloc(1, 1);
-	if (reading(fd, &str[fd]) == -1
-		|| (*str[fd] == 0 && reading(fd, &str[fd]) == 0))
+	rdng = reading(fd, &str[fd]);
+	if (rdng == -1 || (*str[fd] == 0 && rdng == 0))
 	{
 		if (str[fd] != NULL)
 		{
@@ -112,37 +106,39 @@ char	*get_next_line(int fd)
 	return (cpy_del(&str[fd]));
 }
 
-// int main (void)
-// {
-// 	int		fd1;
-// 	int		fd2;
-// 	int		fd3;
+/*
+int main (void)
+{
+	int		fd1;
+	int		fd2;
+	int		fd3;
 
-// 	fd1 = open("test1.txt", O_RDONLY);
-// 	fd2 = open("test2.txt", O_RDONLY);
-// 	fd3 = open("test3.txt", O_RDONLY);
-// 	printf("%s\n", get_next_line(fd1));
-// 	printf("%s\n", get_next_line(fd2));
-// 	printf("%s\n", get_next_line(fd3));
-// 	printf("%s\n", get_next_line(fd1));
-// 	printf("%s\n", get_next_line(fd2));
-// 	printf("%s\n", get_next_line(fd3));
-// 	printf("%s\n", get_next_line(fd1));
-// 	printf("%s\n", get_next_line(fd2));
-// 	printf("%s\n", get_next_line(fd3));
-// 	printf("%s\n", get_next_line(fd1));
-// 	printf("%s\n", get_next_line(fd2));
-// 	printf("%s\n", get_next_line(fd3));
-// 	printf("%s\n", get_next_line(fd1));
-// 	printf("%s\n", get_next_line(fd2));
-// 	printf("%s\n", get_next_line(fd3));
-// 	printf("%s\n", get_next_line(fd1));
-// 	printf("%s\n", get_next_line(fd2));
-// 	printf("%s\n", get_next_line(fd3));
-// 	printf("%s\n", get_next_line(fd1));
-// 	printf("%s\n", get_next_line(fd2));
-// 	printf("%s\n", get_next_line(fd3));
-// 	printf("%s\n", get_next_line(fd1));
-// 	printf("%s\n", get_next_line(fd2));
-// 	printf("%s\n", get_next_line(fd3));
-// }
+	fd1 = open("test1.txt", O_RDONLY);
+	fd2 = open("test2.txt", O_RDONLY);
+	fd3 = open("test3.txt", O_RDONLY);
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd2));
+	printf("%s\n", get_next_line(fd3));
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd2));
+	printf("%s\n", get_next_line(fd3));
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd2));
+	printf("%s\n", get_next_line(fd3));
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd2));
+	printf("%s\n", get_next_line(fd3));
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd2));
+	printf("%s\n", get_next_line(fd3));
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd2));
+	printf("%s\n", get_next_line(fd3));
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd2));
+	printf("%s\n", get_next_line(fd3));
+	printf("%s\n", get_next_line(fd1));
+	printf("%s\n", get_next_line(fd2));
+	printf("%s\n", get_next_line(fd3));
+}
+*/
